@@ -6,7 +6,7 @@ export const createPost = async (req, res) => {
   const newPost = new postModel(req.body);
   try {
     await newPost.save();
-    res.status(200).json("Post Created!");
+    res.status(200).json(newPost);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -99,12 +99,12 @@ export const getTimelinePosts = async (req, res) => {
         },
       },
     ]);
-    res
-      .status(200)
-      .json(currentUserPost.concat(...followingPosts[0].followingPosts))
-      .sort((a, b) => {
-        return b.createdAt - a.createdAt;
-      });
+
+    const mergedPosts = currentUserPost
+      .concat(...followingPosts[0].followingPosts)
+      .mergedPosts?.sort((a, b) => b.createdAt - a.createdAt);
+
+    res.status(200).json(mergedPosts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

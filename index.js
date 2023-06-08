@@ -6,11 +6,8 @@ import cors from "cors";
 import AuthRoutes from "./Routes/AuthRoutes.js";
 import UserRoutes from "./Routes/UserRoutes.js";
 import PostRoutes from "./Routes/PostRoutes.js";
-
+import UploadRoutes from "./Routes/UploadRoute.js";
 const app = express();
-dotenv.config();
-app.use(cors());
-//Routes
 
 //Middlewares
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -21,6 +18,12 @@ app.use(
   })
 );
 
+// to server images for public
+app.use(express.static("public"));
+app.use("/images", express.static("images"));
+app.use(cors());
+
+dotenv.config();
 const port = process.env.PORT;
 mongoose
   .connect(process.env.MONGODB_CONNECTION, {
@@ -29,8 +32,10 @@ mongoose
   })
   .then(() => app.listen(port, () => console.log(`Listening on port ${port}`)));
 app.listen;
+``;
 
 //Usages of routes
 app.use("/auth", AuthRoutes);
 app.use("/user", UserRoutes);
-app.use("/post", PostRoutes);
+app.use("/posts", PostRoutes);
+app.use("/upload", UploadRoutes);
