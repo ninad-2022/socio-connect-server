@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema(
     livesin: String,
     worksAt: String,
     relationship: String,
+    country: String,
     followers: [], //stores the ids of followers
     following: [], //stores usernames of the person whom current user is following
   },
